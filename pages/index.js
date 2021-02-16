@@ -1,18 +1,20 @@
-import Head from 'next/head'
-import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData } from '../lib/posts'
+import Head from "next/head";
+import Layout, { siteTitle } from "../components/layout";
+import utilStyles from "../styles/utils.module.css";
+import { getSortedPostsData } from "../lib/posts";
+import Link from "next/link";
+import Date from "../components/date";
 
-export async function getStaticProps(){
-  const allPostData = getSortedPostsData()
+export async function getStaticProps() {
+  const allPostData = getSortedPostsData();
   return {
     props: {
-      allPostData
-    }
-  }
+      allPostData,
+    },
+  };
 }
 
-export default function Home({allPostData}) {
+export default function Home({ allPostData }) {
   return (
     <Layout home>
       <Head>
@@ -21,7 +23,7 @@ export default function Home({allPostData}) {
       <section className={utilStyles.headingMd}>
         <p>[Your Self Introduction]</p>
         <p>
-          (This is a sample website - you’ll be building a site like this on{' '}
+          (This is a sample website - you’ll be building a site like this on{" "}
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
         </p>
       </section>
@@ -29,18 +31,19 @@ export default function Home({allPostData}) {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingMd}>Blog</h2>
         <ul classNamw={utilStyles.list}>
-          {allPostData.map(({id, date, title}) => (
+          {allPostData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              {title}
+              <Link href={`/posts/${id}`}>
+                <a>{title}</a>
+              </Link>
               <br />
-              {id}
-              <br />
-              {date}
+              <small className={utilStyles.lightText}>
+                <Date dateString={date} />
+              </small>
             </li>
           ))}
         </ul>
       </section>
-
     </Layout>
-  )
+  );
 }
